@@ -1,5 +1,6 @@
 import { sendCookie } from "../utils/features.js";
 import { User } from "../models/user.js";
+import bcrypt from "bcrypt";
 
 // register
 export const register = async (req, res) => {
@@ -11,7 +12,8 @@ export const register = async (req, res) => {
       message: "User Already Exist",
     });
   }
-  user = await User.create({ name, email, password });
+  const hashedPassword = await bcrypt.hash(password, 10);
+  user = await User.create({ name, email, password: hashedPassword });
   sendCookie(user, res, "Registered Succefully", 201);
 };
 
@@ -25,7 +27,7 @@ export const login = async (req, res) => {
       message: "User doesn't exist with this email",
     });
   }
-  const isMatch = (await password) == user.password;
+  const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
     res.status(401).json({
       success: false,
