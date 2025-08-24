@@ -22,14 +22,14 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
   let user = await User.findOne({ email }).select("+password");
   if (!user) {
-    res.status(404).json({
+    return res.status(404).json({
       success: false,
       message: "User doesn't exist with this email",
     });
   }
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
-    res.status(401).json({
+    return res.status(401).json({
       success: false,
       message: "Wrong Password",
     });
