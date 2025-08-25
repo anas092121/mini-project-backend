@@ -6,10 +6,11 @@ import {
   updatePost,
   deletePost,
 } from "../controllers/post.js";
+import { isAuthenticated } from "../middleWares/auth.js";
 
 const router = express.Router();
 
-router.post("/new", createPost); // Create a new post
+router.post("/new", isAuthenticated, createPost); // Create a new post
 router.get("/", getAllPosts); // Get all posts
 router.get("/:id", getPostById); // Get single post
 router.put("/:id", updatePost); // Update post

@@ -14,7 +14,7 @@ app.use(cookieParser());
 
 // routes
 app.use("/api/v1/users", userRouter);
-app.use("/api/v1/users", postRouter);
+app.use("/api/v1/posts", postRouter);
 
 app.get("/", (req, res) => {
   res.send("Server Started");
