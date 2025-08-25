@@ -1,4 +1,5 @@
 import { Post } from "../models/post.js";
+import { User } from "../models/user.js";
 
 //
 // create new post
@@ -20,8 +21,17 @@ export const createPost = async (req, res) => {
   });
 };
 
-export const getAllPosts = (req, res) => {
-  // To be implemented
+//
+// get all posts of a user
+export const getAllPosts = async (req, res) => {
+  const posts = await Post.find()
+    .populate({ path: "user", select: "name" })
+    .sort({ createdAt: -1 });
+
+  res.json({
+    success: true,
+    posts,
+  });
 };
 
 export const getPostById = (req, res) => {
