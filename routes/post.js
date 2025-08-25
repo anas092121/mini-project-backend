@@ -11,8 +11,8 @@ import { isAuthenticated } from "../middleWares/auth.js";
 const router = express.Router();
 
 router.post("/new", isAuthenticated, createPost); // Create a new post
-router.get("/all", getAllPosts); // Get all posts
-router.get("/:id", getPostById); // Get single post
+router.get("/all", isAuthenticated, getAllPosts); // Get all posts
+router.get("/:id", isAuthenticated, getPostById); // Get single post
 router.put("/:id", updatePost); // Update post
 router.delete("/:id", deletePost); // Delete post
 

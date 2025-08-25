@@ -34,8 +34,27 @@ export const getAllPosts = async (req, res) => {
   });
 };
 
-export const getPostById = (req, res) => {
-  // To be implemented
+//
+// get only one post with id
+export const getPostById = async (req, res) => {
+  const { id } = req.params;
+
+  const post = await Post.findById(id).populate({
+    path: "user",
+    select: "name",
+  });
+
+  if (!post) {
+    return res.status(404).json({
+      success: false,
+      message: "Post Not Found",
+    });
+  }
+
+  res.status(200).json({
+    success: true,
+    post,
+  });
 };
 
 export const updatePost = (req, res) => {
