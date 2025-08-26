@@ -57,8 +57,34 @@ export const getPostById = async (req, res) => {
   });
 };
 
-export const updatePost = (req, res) => {
-  // To be implemented
+export const updatePost = async (req, res) => {
+  const { id } = req.params;
+  const { title, caption, image } = req.body;
+  const post = await Post.findById(id);
+  if (!post) {
+    return res.status(404).json({
+      success: false,
+      message: "Post not found",
+    });
+  }
+  // checking ownership of post
+  if (post.user.toString() !== req.user._id.toString()) {
+    return res.status(401).json({
+      success: false,
+      message: "Unauthorised",
+    });
+  }
+
+  post.title = title || post.title;
+  post.caption = caption || post.caption;
+  post.image = image || post.image;
+  await post.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Post updated successfully",
+    post,
+  });
 };
 
 export const deletePost = (req, res) => {

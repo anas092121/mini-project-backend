@@ -10,10 +10,10 @@ import { isAuthenticated } from "../middleWares/auth.js";
 
 const router = express.Router();
 
-router.post("/new", isAuthenticated, createPost); // Create a new post
-router.get("/all", isAuthenticated, getAllPosts); // Get all posts
-router.get("/:id", isAuthenticated, getPostById); // Get single post
-router.put("/:id", updatePost); // Update post
+router.post("/new", isAuthenticated, createPost);
+router.get("/all", isAuthenticated, getAllPosts);
+router.get("/:id", isAuthenticated, getPostById);
+router.put("/:id", isAuthenticated, updatePost); // Update post
 router.delete("/:id", deletePost); // Delete post
 
 export default router;
