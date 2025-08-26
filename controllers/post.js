@@ -59,7 +59,7 @@ export const getPostById = async (req, res) => {
 
 export const updatePost = async (req, res) => {
   const { id } = req.params;
-  const { title, caption, image } = req.body;
+  const { title, caption, image, tags } = req.body;
   const post = await Post.findById(id);
   if (!post) {
     return res.status(404).json({
@@ -78,6 +78,7 @@ export const updatePost = async (req, res) => {
   post.title = title || post.title;
   post.caption = caption || post.caption;
   post.image = image || post.image;
+  post.tags = tags || post.tags;
   await post.save();
 
   res.status(200).json({
