@@ -88,6 +88,27 @@ export const updatePost = async (req, res) => {
   });
 };
 
-export const deletePost = (req, res) => {
-  // To be implemented
+export const deletePost = async (req, res) => {
+  const { id } = req.params;
+  const post = await Post.findById(id);
+  if (!post) {
+    return res.status(404).json({
+      success: false,
+      message: "Post not found",
+    });
+  }
+
+  // checking the ownership of post
+  if (post.user.toString() !== req.user._id.toString()) {
+    return res.status(403).json({
+      success: false,
+      message: "Not authorized to delete this post",
+    });
+  }
+
+  await post.deleteOne();
+  res.status(200).json({
+    success: true,
+    message: "Post Deleted Successfully",
+  });
 };

@@ -14,6 +14,6 @@ router.post("/new", isAuthenticated, createPost);
 router.get("/all", isAuthenticated, getAllPosts);
 router.get("/:id", isAuthenticated, getPostById);
 router.put("/:id", isAuthenticated, updatePost); // Update post
-router.delete("/:id", deletePost); // Delete post
+router.delete("/:id", isAuthenticated, deletePost); // Delete post
 
 export default router;
