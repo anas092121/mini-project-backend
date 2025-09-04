@@ -4,6 +4,7 @@ import userRouter from "./routes/user.js";
 import postRouter from "./routes/post.js";
 import cookieParser from "cookie-parser";
 import { errorMiddleware } from "./middleWares/errorHandler.js";
+import cors from "cors";
 
 config({ path: "./data/config.env" }); // load env first
 
@@ -13,12 +14,21 @@ export const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
+app.use(
+  cors({
+    origin: process.env.FRONT_URL.split(","),
+    methods: ["GET", "PUT", "POST", "DELETE"],
+    credentials: true,
+  })
+);
+
 // routes
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/posts", postRouter);
 
 app.get("/", (req, res) => {
-  res.send("Server Started");
+  res.send("Mini Prpject Server Started");
 });
 
+// error handling middleware
 app.use(errorMiddleware);
