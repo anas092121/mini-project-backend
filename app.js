@@ -27,7 +27,7 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/posts", postRouter);
 
 app.get("/", (req, res) => {
-  res.send("Mini Prpject Server Started");
+  res.send("POSTMUX Server Started");
 });
 
 // error handling middleware
