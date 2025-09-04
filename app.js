@@ -27,7 +27,12 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/posts", postRouter);
 
 app.get("/", (req, res) => {
-  res.send("POSTMUX Server Started");
+  res.json({
+    title: "Social Media Post Creator",
+    description:
+      "A MERN stack app to create, schedule, and manage social media posts with AI captions.",
+    status: "Backend is running",
+  });
 });
 
 // error handling middleware
