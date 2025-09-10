@@ -87,24 +87,26 @@ The project is built entirely on _free and open-source technologies_ with a focu
 
 ## API Endpoints
 
+### Base URL : https://postmux.onrender.com/api/v1
+
 ### User Routes
 
-| Method | Endpoint             | Description                 | Auth |
-| ------ | -------------------- | --------------------------- | ---- |
-| POST   | /api/v1/users/new    | Register a new user         | ❌   |
-| POST   | /api/v1/users/login  | Login and get access token  | ❌   |
-| GET    | /api/v1/users/me     | Get logged-in user profile  | ✅   |
-| POST   | /api/v1/users/logout | Logout and invalidate token | ✅   |
+| Method | Endpoint             | Description          | Auth |
+| ------ | -------------------- | -------------------- | ---- |
+| POST   | /users/new    | Register a new user         | ❌   |
+| POST   | /users/login  | Login and get access token  | ❌   |
+| GET    | /users/me     | Get logged-in user profile  | ✅   |
+| POST   | /users/logout | Logout and invalidate token | ✅   |
 
 ### Post Routes
 
-| Method | Endpoint          | Description            | Auth |
-| ------ | ----------------- | ---------------------- | ---- |
-| POST   | /api/v1/posts/new | Create a new post      | ✅   |
-| GET    | /api/v1/posts/all | Get all posts for user | ✅   |
-| GET    | /api/v1/posts/:id | Get post by ID         | ✅   |
-| PUT    | /api/v1/posts/:id | Update post by ID      | ✅   |
-| DELETE | /api/v1/posts/:id | Delete post by ID      | ✅   |
+| Method | Endpoint          | Description     | Auth |
+| ------ | ----------------- | ----------------| ---- |
+| POST   | /posts/new | Create a new post      | ✅   |
+| GET    | /posts/all | Get all posts for user | ✅   |
+| GET    | /posts/:id | Get post by ID         | ✅   |
+| PUT    | /posts/:id | Update post by ID      | ✅   |
+| DELETE | /posts/:id | Delete post by ID      | ✅   |
 
 ---
 
