@@ -110,6 +110,141 @@ The project is built entirely on _free and open-source technologies_ with a focu
 
 ---
 
+
+# PostMux Development Plan
+
+## Phase 1: Planning & Requirements
+### Requirements
+- **Core Features**:  
+  - Post creation and editing  
+  - AI-generated captions using free APIs  
+  - Image compression before upload/export  
+  - Export/download posts (image or file format)  
+  - Simple content calendar for scheduling  
+- **Non-Functional**:  
+  - Responsive UI (mobile + desktop)  
+  - Secure authentication (JWT)  
+  - Free, beginner-friendly tools/libraries  
+
+### Approach
+- Finalize feature list based on target audience.  
+- Create wireframes for UI/UX flow (Figma or Draw.io).  
+- Decide API endpoints, database schema, and component hierarchy.  
+
+---
+
+## Phase 2: Backend Setup
+### Requirements
+- **Tech Stack**: Node.js, Express.js, MongoDB.  
+- Configure environment variables for API keys.  
+- Set up user authentication (register, login, logout).  
+- CRUD operations for posts and calendar entries.  
+- Error handling middleware for all controllers.  
+
+### Approach
+- Initialize project with `npm init`.  
+- Create folder structure: `/controllers`, `/routes`, `/models`, `/middleware`.  
+- Design MongoDB schemas:  
+  - **User**: username, email, hashed password.  
+  - **Post**: title, content, image URL, AI caption, createdBy, createdAt.  
+  - **Calendar**: postId, scheduledDate, userId.  
+- Implement JWT auth middleware for protected routes.  
+- Integrate AI caption generation API in a dedicated controller.  
+
+---
+
+## Phase 3: Frontend Setup
+### Requirements
+- **Tech Stack**: React (with Tailwind CSS pre-configured).  
+- Pages: Login/Register, Dashboard, Post Editor, Calendar, Export/Download.  
+- State management: Context API or Redux (optional).  
+
+### Approach
+- Initialize project with `create-react-app` or Vite.  
+- Organize folders: `/components`, `/pages`, `/hooks`, `/services`.  
+- Create reusable components:  
+  - Post editor (text + image uploader)  
+  - Image compressor UI  
+  - Caption generator panel  
+  - Calendar view  
+- Implement routing with `react-router-dom`.  
+- Connect to backend using Axios or Fetch API.  
+
+---
+
+## Phase 4: AI Caption & Image Compression Integration
+### Requirements
+- Integrate free AI caption generation API (e.g., OpenAI free alternatives or Hugging Face spaces).  
+- Implement client-side image compression using libraries like `browser-image-compression`.  
+
+### Approach
+- Backend: Create a proxy endpoint to securely call AI caption APIs.  
+- Frontend: Build a caption generator section that requests captions from backend.  
+- Frontend: Compress images before sending them to backend to reduce load.  
+
+---
+
+## Phase 5: Export & Content Calendar
+### Requirements
+- Allow exporting posts as images or downloadable formats (e.g., PNG or PDF).  
+- Build a simple content calendar for scheduling and viewing upcoming posts.  
+
+### Approach
+- Backend:  
+  - Add endpoints for saving scheduled posts.  
+  - Store scheduledDate and related metadata in MongoDB.  
+- Frontend:  
+  - Use a library like `react-calendar` to render scheduled posts.  
+  - Add buttons for export/download using `html-to-image` or `jspdf`.  
+
+---
+
+## Phase 6: Testing & Optimization
+### Requirements
+- Unit tests for backend routes and controllers.  
+- Frontend testing for major components and API calls.  
+- Performance optimization for large images and multiple posts.  
+
+### Approach
+- Use Jest and Supertest for backend tests.  
+- Use React Testing Library for frontend tests.  
+- Test API error handling and edge cases.  
+- Profile and optimize API response times and bundle sizes.  
+
+---
+
+## Phase 7: Deployment & Documentation
+### Requirements
+- Deploy backend (e.g., Render or Railway).  
+- Deploy frontend (e.g., Vercel or Netlify).  
+- Create a production `.env` configuration for API keys and URLs.  
+- Write detailed README with setup and usage instructions.  
+
+### Approach
+- Use Git for version control with feature-based commits.  
+- Configure CORS and HTTPS for production.  
+- Include screenshots and sample data in documentation.  
+
+---
+
+## Phase 8: Future Enhancements
+### Ideas
+- Direct posting to social media platforms.  
+- Advanced analytics (likes, shares, engagement).  
+- Collaborative features (teams, shared calendars).  
+- Premium tier with enhanced AI features.  
+
+### Approach
+- Gather user feedback post-launch.  
+- Research APIs and SDKs for direct posting (e.g., Meta Graph API).  
+- Incrementally add analytics dashboards with Recharts or Chart.js.
+
+
+
+
+---
+
+
 ## System Architecture
 
 ```mermaid
