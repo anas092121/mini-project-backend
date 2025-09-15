@@ -1,5 +1,7 @@
 import { Post } from "../models/post.js";
 import ErrorHandler from "../middleWares/errorHandler.js";
+import cloudinary from "../config/cloudinary.js";
+import fs from "fs";
 
 // Create new post
 export const createPost = async (req, res, next) => {
