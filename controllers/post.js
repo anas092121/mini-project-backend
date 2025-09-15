@@ -11,12 +11,22 @@ export const createPost = async (req, res, next) => {
     if (!title || !caption)
       return next(new ErrorHandler("Title and caption are required", 400));
 
+    let imageUrl = "";
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "postmux_uploads",
+      });
+      imageUrl = result.secure_url;
+      fs.unlinkSync(req.file.path);
+    }
+
     const post = await Post.create({
       user: req.user._id,
       title,
       caption,
       image,
       tags,
+      image: imageUrl,
     });
 
     res.status(201).json({
@@ -75,9 +85,22 @@ export const updatePost = async (req, res, next) => {
       return next(new ErrorHandler("Unauthorized", 403));
 
     const { title, caption, image, tags } = req.body;
+
+    if (req.file) {
+      if (post.image?.public_id) {
+        await cloudinary.uploader.destroy(post.image.public_id);
+      }
+
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "postmux_uploads",
+      });
+
+      post.image = result.secure_url;
+      fs.unlinkSync(req.file.path);
+    }
+
     post.title = title || post.title;
     post.caption = caption || post.caption;
-    post.image = image || post.image;
     post.tags = tags || post.tags;
 
     await post.save();
@@ -101,6 +124,10 @@ export const deletePost = async (req, res, next) => {
     // Check ownership
     if (post.user.toString() !== req.user._id.toString())
       return next(new ErrorHandler("Not authorized to delete this post", 403));
+
+    if (post.image?.public_id) {
+      await cloudinary.uploader.destroy(post.image.public_id);
+    }
 
     await post.deleteOne();
 
