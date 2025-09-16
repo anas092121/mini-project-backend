@@ -1,9 +1,12 @@
 import { v2 as cloudinary } from "cloudinary";
+import { config } from "dotenv";
+
+config({ path: "./data/config.env" });
 
 cloudinary.config({
-  cloud_name: "devanascloud",
-  api_key: "463728187263194",
-  api_secret: "FyT0zEUSWuKvwMPb_9dz6lLHKII",
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
 });
 
 export default cloudinary;
