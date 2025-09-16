@@ -7,13 +7,16 @@ import {
   deletePost,
 } from "../controllers/post.js";
 import { isAuthenticated } from "../middleWares/auth.js";
+import upload from "../config/multer.js";
 
 const router = express.Router();
 
-router.post("/new", isAuthenticated, createPost);
-router.get("/all", isAuthenticated, getAllPosts); // get all posts of a user logged in
-router.get("/:id", isAuthenticated, getPostById); // get a post by id
-router.put("/:id", isAuthenticated, updatePost); // Update post
-router.delete("/:id", isAuthenticated, deletePost); // Delete post
+// Added 'upload.single("image")' middleware to handle image upload
+router.post("/new", isAuthenticated, upload.single("image"), createPost);
+router.put("/:id", isAuthenticated, upload.single("image"), updatePost);
+
+router.get("/all", isAuthenticated, getAllPosts);
+router.get("/:id", isAuthenticated, getPostById);
+router.delete("/:id", isAuthenticated, deletePost);
 
 export default router;

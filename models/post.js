@@ -17,8 +17,16 @@ const postSchema = new mongoose.Schema(
       trim: true,
     },
     image: {
-      type: String,
+      url: {
+        type: String,
+        default: "", // empty if no image
+      },
+      public_id: {
+        type: String,
+        default: "", // empty if no image
+      },
     },
+
     tags: [
       {
         type: String,

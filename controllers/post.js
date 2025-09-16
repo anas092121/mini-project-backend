@@ -6,27 +6,27 @@ import fs from "fs";
 // Create new post
 export const createPost = async (req, res, next) => {
   try {
-    const { title, caption, image, tags } = req.body;
+    const { title, caption, tags } = req.body;
+    const tagsArray = tags ? tags.split(",").map((tag) => tag.trim()) : []; // convert tags string to array
 
     if (!title || !caption)
       return next(new ErrorHandler("Title and caption are required", 400));
 
-    let imageUrl = "";
+    let imageData = {}; // store image as object {url, public_id}
     if (req.file) {
       const result = await cloudinary.uploader.upload(req.file.path, {
-        folder: "postmux_uploads",
+        folder: "postmux_uploads", // set Cloudinary folder
       });
-      imageUrl = result.secure_url;
-      fs.unlinkSync(req.file.path);
+      imageData = { url: result.secure_url, public_id: result.public_id }; // save public_id
+      fs.unlinkSync(req.file.path); // remove temp local file
     }
 
     const post = await Post.create({
       user: req.user._id,
       title,
       caption,
-      image,
-      tags,
-      image: imageUrl,
+      tags: tagsArray, // save tags as array
+      image: imageData,
     });
 
     res.status(201).json({
@@ -35,7 +35,7 @@ export const createPost = async (req, res, next) => {
       post,
     });
   } catch (err) {
-    next(err); // All unexpected errors handled by global middleware
+    next(err);
   }
 };
 
@@ -84,24 +84,26 @@ export const updatePost = async (req, res, next) => {
     if (post.user.toString() !== req.user._id.toString())
       return next(new ErrorHandler("Unauthorized", 403));
 
-    const { title, caption, image, tags } = req.body;
+    const { title, caption, tags } = req.body; // destructure first
+    const tagsArray = tags
+      ? tags.split(",").map((tag) => tag.trim())
+      : post.tags; // parse tags string to array
 
     if (req.file) {
       if (post.image?.public_id) {
+        // delete previous image from Cloudinary
         await cloudinary.uploader.destroy(post.image.public_id);
       }
-
       const result = await cloudinary.uploader.upload(req.file.path, {
         folder: "postmux_uploads",
       });
-
-      post.image = result.secure_url;
-      fs.unlinkSync(req.file.path);
+      post.image = { url: result.secure_url, public_id: result.public_id }; // save new image info
+      fs.unlinkSync(req.file.path); // remove temp local file
     }
 
     post.title = title || post.title;
     post.caption = caption || post.caption;
-    post.tags = tags || post.tags;
+    post.tags = tagsArray; // assign parsed array
 
     await post.save();
 
@@ -126,6 +128,7 @@ export const deletePost = async (req, res, next) => {
       return next(new ErrorHandler("Not authorized to delete this post", 403));
 
     if (post.image?.public_id) {
+      // remove image from Cloudinary
       await cloudinary.uploader.destroy(post.image.public_id);
     }
 
